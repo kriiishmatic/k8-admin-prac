@@ -1,0 +1,32 @@
+apiVersion : v1
+kind: Deployment
+metadata:
+  name: aws-sdk-deployment
+  namespace: roboshop
+  labels:
+    app: aws-sdk-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-sdk-app
+  template:
+    metadata:
+      labels:
+        app: aws-sdk-app  
+  spec:
+    containers:
+      - name: aws-sdk-container
+        image: 854481201869.dkr.ecr.us-east-1.amazonaws.com/awssdk/secrets:v1
+        ports:
+          - containerPort: 8080
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-sdk-service-account
+  namespace: roboshop
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::854481201869:role/aws-secret-role
+
