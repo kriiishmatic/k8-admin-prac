@@ -17,7 +17,7 @@ spec:
   spec:
     containers:
       - name: aws-sdk-container
-        image: 854481201869.dkr.ecr.us-east-1.amazonaws.com/awssdk/secrets:v1
+        image: 854481201869.dkr.ecr.us-east-1.amazonaws.com/awssdk/secrets:v2
         ports:
           - containerPort: 8080
 
@@ -29,4 +29,19 @@ metadata:
   namespace: roboshop
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::854481201869:role/aws-secret-role
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-sdk-service
+  namespace: roboshop
+spec:
+  selector:
+    app: aws-sdk-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
 
